@@ -19,15 +19,20 @@ public class EmployeeRole {
 
     public EmployeeRole() {
         this.productsDatabase = new ProductDatabase(FileNames.PRODUCT_FILENAME);
-        this.customerProductDatabase = new CustomerProductDatabase(FileNames.PRODUCT_FILENAME);
-        this.productsDatabase.readFromFile();
-        this.customerProductDatabase.readFromFile();
+        this.customerProductDatabase = new CustomerProductDatabase(FileNames.CUSTOMERPRODUCT_FILENAME);
+        productsDatabase.readFromFile();
+        customerProductDatabase.readFromFile();
     }
 
-    public void addProduct(String productID, String productName, String manufacturerName, String supplierName, int quantity, float price) {
-        Product product = new Product(productID, productName, manufacturerName, supplierName, quantity, price);
-        productsDatabase.insertRecord(product);
-        productsDatabase.saveToFile();
+    public boolean addProduct(String productID, String productName, String manufacturerName, String supplierName, int quantity, float price) {
+    
+        if(!productsDatabase.contains(productID))
+        {
+            Product product = new Product(productID, productName, manufacturerName, supplierName, quantity, price);
+         productsDatabase.insertRecord(product);
+        return true;
+        }
+        return false;
     }
 
     public Product[] getListOfProducts() {
@@ -42,18 +47,16 @@ public class EmployeeRole {
         Product product = productsDatabase.getRecord(productID);
         if (product != null && product.getQuantity() > 0) {
             product.setQuantity(product.getQuantity() - 1);
-            productsDatabase.saveToFile();
 
             CustomerProduct purchasingOperation = new CustomerProduct(customerSSN, productID, purchaseDate);
             customerProductDatabase.insertRecord(purchasingOperation);
-            customerProductDatabase.saveToFile();
-
             return true;
         }
+        
         return false;
     }
 
-    public double returnProduct(String customerSSN, String productID, LocalDate purchaseDate, LocalDate returnDate) {
+    public int returnProduct(String customerSSN, String productID, LocalDate returnDate,LocalDate purchaseDate) {
         if (returnDate.isBefore(purchaseDate)) {
             return -1;
         }
@@ -61,27 +64,25 @@ public class EmployeeRole {
         String formattedDate = purchaseDate.format(formatter);
         String key = customerSSN + "," + productID + "," + formattedDate;
         if (!customerProductDatabase.contains(key)) {
-            return -1;
+           return -2;
         }
 
         CustomerProduct purchasingOperation = customerProductDatabase.getRecord(key);
         LocalDate eligibleReturnDate = purchasingOperation.getPurchaseDate().plusDays(14);
         if (returnDate.isAfter(eligibleReturnDate)) {
-            return -1;
+            return -3;
+
         }
 
         Product product = productsDatabase.getRecord(productID);
         if (product == null) {
-            return -1;
+            return -4;
         }
 
         product.setQuantity(product.getQuantity() + 1);
-        productsDatabase.saveToFile();
 
         customerProductDatabase.deleteRecord(key);
-        customerProductDatabase.saveToFile();
-
-        return product.getPrice();
+        return 1;
     }
 
     public void logout() {

@@ -11,7 +11,7 @@ public class AdminRole {
     public AdminRole()
     {
         this.database = new EmployeeUserDatabase(FileNames.EMPLOYEE_FILENAME);
-        this.database.readFromFile();
+        database.readFromFile();
     }
 
     public boolean addEmployee(String employeeId, String name, String email, String address, String phoneNumber) {
@@ -27,7 +27,11 @@ public class AdminRole {
     }
         public EmployeeUser[] getListOfEmployees()  {
 
-        return database.returnAllRecords().toArray(new EmployeeUser[0]);
+        List<EmployeeUser> list = database.returnAllRecords();
+        EmployeeUser[] empList = new EmployeeUser[list.size()];
+        for(int i = 0 ;i < list.size();i++)
+            empList[i] = list.get(i);
+        return empList;
     }
     public boolean removeEmployee(String key)
     {

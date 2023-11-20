@@ -4,12 +4,14 @@
  */
 package frontend;
 
+import javax.swing.JFrame;
+
 
 /**
  *
  * @author mohab
  */
-public class Inventory_System extends javax.swing.JFrame {
+public class Inventory_System extends javax.swing.JFrame implements Node{
 
     /**
      * Creates new form Inventory_System
@@ -57,6 +59,11 @@ public class Inventory_System extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inventory System");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 0, 0));
         jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
@@ -107,7 +114,8 @@ public class Inventory_System extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         setVisible(false);
-        Employeelogin form = new Employeelogin();
+        Employee_Login form = new Employee_Login();
+        form.setParentNode(this);
         form.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -115,8 +123,15 @@ public class Inventory_System extends javax.swing.JFrame {
         // TODO add your handling code here:
         setVisible(false);
         Admin_Login form = new Admin_Login();
+        form.setParentNode(this);
         form.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+
+        
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -165,4 +180,16 @@ public class Inventory_System extends javax.swing.JFrame {
     private void setVisible() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public Node getParentNode() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setParentNode(Node node) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+
 }

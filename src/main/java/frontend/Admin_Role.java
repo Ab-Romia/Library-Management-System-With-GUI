@@ -5,30 +5,26 @@
 package frontend;
 import backend.EmployeeUser;
 import backend.AdminRole;
+import javax.swing.JFrame;
 
 
 /**
  *
  * @author mohab
  */
-public class Admin_Role extends javax.swing.JFrame {
+public class Admin_Role extends javax.swing.JFrame  implements Node{
 
-    private AdminRole admin = new AdminRole();
+    protected static AdminRole admin = new AdminRole();
+    public Node parent;
     public Admin_Role()
     {
-                initComponents();
+    initComponents();
 
     }
     
 
     
-     boolean employeeExists(String text1, String text2, String text3, String text4, String text5) {
-      
-        boolean ret =  false;
-       EmployeeUser emp = new EmployeeUser(text1,text2,text3,text4,text5);
-           
-        return true;
-    }
+
 
     /**
      * Creates new form AdminRole
@@ -49,8 +45,13 @@ public class Admin_Role extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Admin Role");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 0, 0));
         jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
@@ -125,8 +126,12 @@ public class Admin_Role extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         //Add Employee
-        AddEmployee form = new AddEmployee(admin);
+
+        AddEmployee form = new AddEmployee();
+        setVisible(false);
+        form.setParentNode(this);
         form.setVisible(true);
+       
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -134,12 +139,22 @@ public class Admin_Role extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         //View Employees
+        EmployeesView viewEmp = new EmployeesView();   
+        setVisible(false);
+        viewEmp.setParentNode(this);
+        viewEmp.setVisible(true);
+        
+        
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         //Remove Employee
-        
+        RemoveEmployee form = new RemoveEmployee(admin);
+        setVisible(false);
+        form.setParentNode(this);
+        form.setVisible(true);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -151,6 +166,12 @@ public class Admin_Role extends javax.swing.JFrame {
         Inventory_System form = new Inventory_System();
         form.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.setVisible(false);
+        ((JFrame)getParentNode()).setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -194,4 +215,16 @@ public class Admin_Role extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Node getParentNode() {
+        return parent;
+    }
+
+    @Override
+    public void setParentNode(Node node) {
+        this.parent = node;
+    }
+
+
 }

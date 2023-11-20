@@ -4,17 +4,20 @@
  */
 package frontend;
 import backend.AdminRole;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author romia
  */
-public class RemoveEmployee extends javax.swing.JFrame {
+public class RemoveEmployee extends javax.swing.JFrame implements Node{
 
     /**
      * Creates new form RemoveEmployee
      */
     AdminRole admin;
+    public Node parent;
     public RemoveEmployee(AdminRole admin) {
         this.admin = admin;
         initComponents();
@@ -34,8 +37,13 @@ public class RemoveEmployee extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         Remove = new java.awt.Button();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Remove Employee");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(0, 255, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -72,21 +80,38 @@ public class RemoveEmployee extends javax.swing.JFrame {
                 .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Remove, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
-
-        Remove.getAccessibleContext().setAccessibleName("Remove");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
         // TODO add your handling code here:
+        String SearchKey = jTextField1.getText();
+        if(admin.removeEmployee(SearchKey))
+        {
+            ((JFrame)getParentNode()).setVisible(true);
+            this.setVisible(false);
+            JOptionPane.showMessageDialog(null,"The Employee with Id = "+SearchKey+" has been deleted.");
+            
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"The Employee with Id = "+SearchKey+" doesn't Exist");
+            
+        }
+
         
     }//GEN-LAST:event_RemoveActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.setVisible(false);
+        ((JFrame)getParentNode()).setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -129,4 +154,14 @@ public class RemoveEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Node getParentNode() {
+         return parent;
+    }
+
+    @Override
+    public void setParentNode(Node node) {
+         this.parent = node;
+    }
 }

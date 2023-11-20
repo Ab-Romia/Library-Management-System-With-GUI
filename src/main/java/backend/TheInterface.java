@@ -1,6 +1,6 @@
 package backend;
 
-interface TheInterface  {
+public interface TheInterface  {
     String lineRepresentation();
     String getSearchKey();
 
